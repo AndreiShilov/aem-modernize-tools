@@ -18,24 +18,28 @@
  */
 package com.adobe.aem.modernize.dialog.impl;
 
+import static com.adobe.aem.modernize.dialog.DialogRewriteUtils.CORAL_2_BACKUP_SUFFIX;
+import static com.adobe.aem.modernize.dialog.DialogRewriteUtils.NN_CQ_DESIGN_DIALOG;
+import static com.adobe.aem.modernize.dialog.DialogRewriteUtils.NN_CQ_DIALOG;
+
 import java.util.Iterator;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
+
 import javax.jcr.Node;
 import javax.jcr.RepositoryException;
 import javax.jcr.Session;
 
 import org.apache.jackrabbit.commons.flat.TreeTraverser;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.adobe.aem.modernize.RewriteException;
 import com.adobe.aem.modernize.dialog.DialogRewriteRule;
 import com.adobe.aem.modernize.dialog.DialogRewriteUtils;
 import com.adobe.aem.modernize.dialog.DialogType;
 import com.day.cq.commons.jcr.JcrUtil;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import static com.adobe.aem.modernize.dialog.DialogRewriteUtils.*;
 
 public class DialogTreeRewriter {
 

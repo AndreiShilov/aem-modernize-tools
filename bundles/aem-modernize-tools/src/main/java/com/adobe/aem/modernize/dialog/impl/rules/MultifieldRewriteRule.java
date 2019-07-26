@@ -18,7 +18,12 @@
  */
 package com.adobe.aem.modernize.dialog.impl.rules;
 
+import static com.adobe.aem.modernize.dialog.DialogRewriteUtils.copyProperty;
+import static com.adobe.aem.modernize.dialog.DialogRewriteUtils.hasXtype;
+import static com.adobe.aem.modernize.impl.RewriteUtils.rename;
+
 import java.util.Set;
+
 import javax.jcr.Node;
 import javax.jcr.RepositoryException;
 
@@ -27,8 +32,6 @@ import org.apache.felix.scr.annotations.Service;
 
 import com.adobe.aem.modernize.dialog.AbstractDialogRewriteRule;
 import com.day.cq.commons.jcr.JcrUtil;
-import static com.adobe.aem.modernize.impl.RewriteUtils.rename;
-import static com.adobe.aem.modernize.dialog.DialogRewriteUtils.*;
 
 /**
  * Rewrites widgets of xtype "multifield". The "fieldConfig" subnode (if existing) is renamed to "field" and
@@ -44,7 +47,7 @@ public class MultifieldRewriteRule extends AbstractDialogRewriteRule {
 
     public boolean matches(Node root)
             throws RepositoryException {
-        return hasXtype(root, XTYPE);
+        return hasXtype(root, XTYPE) || hasXtype(root, "multifieldmap");
     }
 
     public Node applyTo(Node root, Set<Node> finalNodes) throws RepositoryException {
@@ -62,8 +65,13 @@ public class MultifieldRewriteRule extends AbstractDialogRewriteRule {
 
         Node field;
         if (root.hasNode("fieldConfig")) {
-            field = JcrUtil.copy(root.getNode("fieldConfig"), newRoot, "field");
-            field.setPrimaryType("cq:Widget");
+            Node fieldNew = newRoot.addNode("field", "nt:unstructured");
+            Node itemsField = fieldNew.addNode("items", "nt:unstructured");
+            Node column = itemsField.addNode("column", "nt:unstructured");
+            column.setProperty("sling:resourceType", "granite/ui/components/coral/foundation/container");
+
+            field = JcrUtil.copy(root.getNode("fieldConfig"), column, "items");
+            field.setPrimaryType("nt:unstructured");
             copyProperty(root, "name", field, "name");
         } else {
             field = newRoot.addNode("field", "nt:unstructured");
