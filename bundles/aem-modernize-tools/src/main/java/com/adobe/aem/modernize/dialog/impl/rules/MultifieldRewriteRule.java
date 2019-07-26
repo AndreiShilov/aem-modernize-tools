@@ -63,6 +63,10 @@ public class MultifieldRewriteRule extends AbstractDialogRewriteRule {
         copyProperty(root, "fieldLabel", newRoot, "fieldLabel");
         copyProperty(root, "fieldDescription", newRoot, "fieldDescription");
 
+        if (!newRoot.hasProperty("fieldLabel")) {
+            newRoot.setProperty("fieldLabel", "");
+        }
+
         Node field;
         if (root.hasNode("fieldConfig")) {
 
