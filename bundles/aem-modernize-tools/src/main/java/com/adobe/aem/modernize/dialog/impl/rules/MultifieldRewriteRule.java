@@ -87,7 +87,8 @@ public class MultifieldRewriteRule extends AbstractDialogRewriteRule {
                 field.setPrimaryType("nt:unstructured");
                 copyProperty(root, "name", fieldNew, "name");
             } else {
-                JcrUtil.copy(root, newRoot, "fieldConfig");
+                Node fieldNew = JcrUtil.copy(fieldConfig, newRoot, "field");
+                fieldNew.setProperty("name", nameProp);
             }
 
         } else {
