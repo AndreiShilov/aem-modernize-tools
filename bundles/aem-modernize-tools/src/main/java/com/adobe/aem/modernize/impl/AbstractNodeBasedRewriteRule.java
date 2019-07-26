@@ -353,6 +353,12 @@ public abstract class AbstractNodeBasedRewriteRule implements RewriteRule {
                         rewriteProperty(property, rewritePropertiesNode.getProperty("./" + mappedProperty.getName()));
                     }
                 }
+
+                if (mappedProperty != null && "cq-msm-lockable".equals(mappedProperty.getName())) {
+                    final String propertyString = mappedProperty.getString().substring(2);
+                    mappedProperty.setValue(propertyString);
+                }
+
             }
 
             // remove <cq:rewriteProperties> node post-mapping
@@ -470,10 +476,9 @@ public abstract class AbstractNodeBasedRewriteRule implements RewriteRule {
                             newProperty.setValue(!newProperty.getBoolean());
                         } else if ("false".equals(originalPropValue)) { //proceed even if type was not boolean
                             newProperty.setValue((Value) null);
-                            parent.setProperty(name,!Boolean.parseBoolean(originalPropValue));
+                            parent.setProperty(name, !Boolean.parseBoolean(originalPropValue));
                         }
                     }
-
 
                     // the mapping was successful
                     deleteProperty = false;
