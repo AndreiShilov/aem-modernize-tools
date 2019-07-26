@@ -14,11 +14,10 @@
                 fieldDescription="${./fieldDescription}"
                 name="${./name}"
                 text="[${./fieldLabel},${./boxLabel}]"
-                value="[${./inputValue},${./value},true]"
+                value="true"
                 disabled="${./disabled}"
                 checked="${./checked}"
                 required="!{./allowBlank}"
-                renderReadOnly="{Boolean}true"
                 cq:rewriteFinal="{Boolean}true">
             <granite:data jcr:primaryType="nt:unstructured"
                           cq-msm-lockable="${./name}"
