@@ -91,7 +91,7 @@ public class DialogTreeRewriter {
      *
      * @param root The root of the dialog be rewritten
      * @return the root node of the rewritten dialog tree, or null if it was removed
-     * @throws RewriteException If the rewrite operation fails
+     * @throws RewriteException    If the rewrite operation fails
      * @throws RepositoryException If there is a problem with the repository
      */
     public Node rewrite(Node root) throws RewriteException, RepositoryException {
@@ -138,7 +138,7 @@ public class DialogTreeRewriter {
         // keeps track of whether or not the rewrite operation succeeded
         boolean success = false;
         // collect paths of nodes that are final and can be skipped by the algorithm
-        Set<String> finalPaths = new LinkedHashSet<String>();
+        Set<String> finalPaths = new LinkedHashSet<>();
 
         try {
             // do a pre-order tree traversal until we found no match
@@ -171,7 +171,7 @@ public class DialogTreeRewriter {
                     }
 
                     // traverse all available rules
-                    Set<Node> finalNodes = new LinkedHashSet<Node>();
+                    Set<Node> finalNodes = new LinkedHashSet<>();
                     for (DialogRewriteRule rule : rules) {
                         // check for a match
                         if (rule.matches(node)) {

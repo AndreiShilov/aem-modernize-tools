@@ -299,6 +299,7 @@ public abstract class AbstractNodeBasedRewriteRule implements RewriteRule {
 
         while (nodeIterator.hasNext()) {
             Node node = nodeIterator.next();
+
             // iterate over all properties
             PropertyIterator propertyIterator = node.getProperties();
             Node rewritePropertiesNode = null;
@@ -359,6 +360,11 @@ public abstract class AbstractNodeBasedRewriteRule implements RewriteRule {
                     mappedProperty.setValue(propertyString);
                 }
 
+                if (!node.hasProperty("name") && node.hasProperty("sling:resourceType")) {
+                    if (node.getProperty("sling:resourceType").getString().startsWith("granite/ui/components/coral/foundation/form")) {
+                        node.setProperty("name", "./" + node.getName());
+                    }
+                }
             }
 
             // remove <cq:rewriteProperties> node post-mapping

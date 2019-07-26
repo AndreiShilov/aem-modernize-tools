@@ -144,7 +144,7 @@ public class CqDialogRewriteRule extends AbstractDialogRewriteRule {
 
         // check if there is a tab panel child called "tabs"
         Node tabs = getChild(items, "tabs");
-        if (tabs != null && isTabPanel(tabs)) {
+        if (isTabPanel(tabs)) {
             return getChild(tabs, "items");
         }
 

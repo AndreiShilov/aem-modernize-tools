@@ -65,14 +65,31 @@ public class MultifieldRewriteRule extends AbstractDialogRewriteRule {
 
         Node field;
         if (root.hasNode("fieldConfig")) {
-            Node fieldNew = newRoot.addNode("field", "nt:unstructured");
-            Node itemsField = fieldNew.addNode("items", "nt:unstructured");
-            Node column = itemsField.addNode("column", "nt:unstructured");
-            column.setProperty("sling:resourceType", "granite/ui/components/coral/foundation/container");
 
-            field = JcrUtil.copy(root.getNode("fieldConfig"), column, "items");
-            field.setPrimaryType("nt:unstructured");
-            copyProperty(root, "name", field, "name");
+            Node graniteData = newRoot.addNode("granite:data", "nt:unstructured");
+            String nameProp = root.getProperty("name").getString();
+            graniteData.setProperty("cq-msm-lockable", nameProp.substring(2));
+
+
+            Node fieldConfig = root.getNode("fieldConfig");
+
+            if (fieldConfig.hasNodes()) {
+                newRoot.setProperty("composite", true);
+                Node fieldNew = newRoot.addNode("field", "nt:unstructured");
+                fieldNew.setProperty("sling:resourceType", "granite/ui/components/coral/foundation/container");
+
+                Node itemsField = fieldNew.addNode("items", "nt:unstructured");
+
+                Node column = itemsField.addNode("column", "nt:unstructured");
+                column.setProperty("sling:resourceType", "granite/ui/components/coral/foundation/container");
+
+                field = JcrUtil.copy(fieldConfig, column, "items");
+                field.setPrimaryType("nt:unstructured");
+                copyProperty(root, "name", fieldNew, "name");
+            } else {
+                JcrUtil.copy(root, newRoot, "fieldConfig");
+            }
+
         } else {
             field = newRoot.addNode("field", "nt:unstructured");
             finalNodes.add(field);
