@@ -25,6 +25,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
 import javax.jcr.Node;
 import javax.jcr.NodeIterator;
 import javax.jcr.Property;
@@ -36,13 +37,12 @@ import javax.jcr.Value;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.jackrabbit.commons.flat.TreeTraverser;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.adobe.aem.modernize.RewriteException;
 import com.adobe.aem.modernize.RewriteRule;
-import com.adobe.aem.modernize.impl.RewriteUtils;
 import com.day.cq.commons.jcr.JcrUtil;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 /**
  * An abstract rule that rewrites a tree based on a given node structure. The node structure
@@ -188,6 +188,7 @@ public abstract class AbstractNodeBasedRewriteRule implements RewriteRule {
         // no pattern matched
         return false;
     }
+
     private boolean matches(Node root, Node pattern) throws RepositoryException {
         // check if the primary types match
         if (!RewriteUtils.hasPrimaryType(root, pattern.getPrimaryNodeType().getName())) {
@@ -463,9 +464,16 @@ public abstract class AbstractNodeBasedRewriteRule implements RewriteRule {
 
                     // negate boolean properties if negation character has been set
                     String negate = matcher.group(1);
-                    if ("!".equals(negate) && originalProperty.getType() == PropertyType.BOOLEAN) {
-                        newProperty.setValue(!newProperty.getBoolean());
+                    String originalPropValue = originalProperty.getValue().getString();
+                    if ("!".equals(negate)) {
+                        if (originalProperty.getType() == PropertyType.BOOLEAN) {
+                            newProperty.setValue(!newProperty.getBoolean());
+                        } else if ("false".equals(originalPropValue)) { //proceed even if type was not boolean
+                            newProperty.setValue((Value) null);
+                            parent.setProperty(name,!Boolean.parseBoolean(originalPropValue));
+                        }
                     }
+
 
                     // the mapping was successful
                     deleteProperty = false;
@@ -503,7 +511,7 @@ public abstract class AbstractNodeBasedRewriteRule implements RewriteRule {
     /**
      * Applies a string rewrite to a property.
      *
-     * @param property the property to rewrite
+     * @param property        the property to rewrite
      * @param rewriteProperty the property that defines the string rewrite
      */
     protected void rewriteProperty(Property property, Property rewriteProperty) throws RepositoryException {
@@ -522,6 +530,7 @@ public abstract class AbstractNodeBasedRewriteRule implements RewriteRule {
             }
         }
     }
+
     public int getRanking() {
         if (ranking == null) {
             try {

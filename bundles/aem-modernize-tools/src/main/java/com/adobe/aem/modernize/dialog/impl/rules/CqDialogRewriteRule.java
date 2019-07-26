@@ -18,7 +18,14 @@
  */
 package com.adobe.aem.modernize.dialog.impl.rules;
 
+import static com.adobe.aem.modernize.dialog.DialogRewriteUtils.NN_CQ_DESIGN_DIALOG;
+import static com.adobe.aem.modernize.dialog.DialogRewriteUtils.NN_CQ_DIALOG;
+import static com.adobe.aem.modernize.dialog.DialogRewriteUtils.NT_DIALOG;
+import static com.adobe.aem.modernize.dialog.DialogRewriteUtils.hasXtype;
+import static com.adobe.aem.modernize.impl.RewriteUtils.hasPrimaryType;
+
 import java.util.Set;
+
 import javax.jcr.Node;
 import javax.jcr.NodeIterator;
 import javax.jcr.RepositoryException;
@@ -28,12 +35,10 @@ import org.apache.felix.scr.annotations.Properties;
 import org.apache.felix.scr.annotations.Property;
 import org.apache.felix.scr.annotations.Service;
 
-import com.adobe.aem.modernize.dialog.AbstractDialogRewriteRule;
 import com.adobe.aem.modernize.RewriteException;
+import com.adobe.aem.modernize.dialog.AbstractDialogRewriteRule;
 import com.day.cq.commons.jcr.JcrUtil;
 import com.day.cq.wcm.api.NameConstants;
-import static com.adobe.aem.modernize.impl.RewriteUtils.hasPrimaryType;
-import static com.adobe.aem.modernize.dialog.DialogRewriteUtils.*;
 
 /**
  * Rule that rewrites the basic structure of dialogs. It creates a Granite UI container using either a "tabs" or
@@ -90,7 +95,7 @@ public class CqDialogRewriteRule extends AbstractDialogRewriteRule {
         Node content = cqDialog.addNode("content", nodeType);
 
         // add items child node
-        Node items = content.addNode("items", "cq:WidgetCollection");
+        Node items = content.addNode("items", "nt:unstructured");
 
         // copy items
         NodeIterator iterator = dialogItems.getNodes();

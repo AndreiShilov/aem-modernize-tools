@@ -23,6 +23,7 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.LinkedList;
 import java.util.List;
+
 import javax.jcr.Node;
 import javax.jcr.NodeIterator;
 import javax.jcr.RepositoryException;
@@ -41,13 +42,13 @@ import org.apache.sling.api.resource.Resource;
 import org.apache.sling.api.resource.ResourceResolver;
 import org.apache.sling.api.servlets.SlingAllMethodsServlet;
 import org.apache.sling.commons.json.JSONObject;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.adobe.aem.modernize.RewriteException;
 import com.adobe.aem.modernize.dialog.DialogRewriteRule;
 import com.adobe.aem.modernize.dialog.impl.rules.NodeBasedDialogRewriteRule;
 import com.day.cq.commons.jcr.JcrConstants;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 @SlingServlet(
         methods = "POST",
@@ -91,7 +92,7 @@ public class DialogConversionServlet extends SlingAllMethodsServlet {
 
     @Override
     protected void doPost(SlingHttpServletRequest request, SlingHttpServletResponse response)
-throws ServletException, IOException {
+            throws ServletException, IOException {
         // validate 'paths' parameter
         RequestParameter[] paths = request.getRequestParameters(PARAM_PATHS);
         if (paths == null) {
@@ -141,6 +142,7 @@ throws ServletException, IOException {
             long tack = System.currentTimeMillis();
             logger.debug("Rewrote {} dialogs in {} ms", paths.length, tack - tick);
         } catch (Exception e) {
+            logger.error(e.getMessage(), e);
             throw new ServletException("Caught exception while rewriting dialogs", e);
         }
     }
@@ -207,7 +209,7 @@ throws ServletException, IOException {
         String primaryType = node.getPrimaryNodeType().getName();
 
         return primaryType.equals("sling:Folder")
-            || primaryType.equals("sling:OrderedFolder")
-            || primaryType.equals(JcrConstants.NT_FOLDER);
+                || primaryType.equals("sling:OrderedFolder")
+                || primaryType.equals(JcrConstants.NT_FOLDER);
     }
 }
