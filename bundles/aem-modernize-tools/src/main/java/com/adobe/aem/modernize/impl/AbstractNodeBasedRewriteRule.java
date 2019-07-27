@@ -361,7 +361,9 @@ public abstract class AbstractNodeBasedRewriteRule implements RewriteRule {
                 }
 
                 if (!node.hasProperty("name") && node.hasProperty("sling:resourceType")) {
-                    if (node.getProperty("sling:resourceType").getString().startsWith("granite/ui/components/coral/foundation/form")) {
+                    final String resType = node.getProperty("sling:resourceType").getString();
+                    if (resType.startsWith("granite/ui/components/coral/foundation/form")
+                            && !resType.equals("granite/ui/components/coral/foundation/form/fieldset")) {
                         node.setProperty("name", "./" + node.getName());
                     }
                 }
