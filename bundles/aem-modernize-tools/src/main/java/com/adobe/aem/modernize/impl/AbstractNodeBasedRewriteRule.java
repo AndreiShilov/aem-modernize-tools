@@ -362,7 +362,8 @@ public abstract class AbstractNodeBasedRewriteRule implements RewriteRule {
 
                 if (!node.hasProperty("name") && node.hasProperty("sling:resourceType")) {
                     final String resType = node.getProperty("sling:resourceType").getString();
-                    if (resType.startsWith("granite/ui/components/coral/foundation/form")
+                    if ((resType.startsWith("granite/ui/components/coral/foundation/form")
+                            || resType.equals("cq/gui/components/coral/common/form/tagfield"))
                             && !resType.equals("granite/ui/components/coral/foundation/form/fieldset")) {
                         node.setProperty("name", "./" + node.getName());
                     }
@@ -482,7 +483,7 @@ public abstract class AbstractNodeBasedRewriteRule implements RewriteRule {
                     if ("!".equals(negate)) {
                         if (originalProperty.getType() == PropertyType.BOOLEAN) {
                             newProperty.setValue(!newProperty.getBoolean());
-                        } else if ("false".equals(originalPropValue)) { //proceed even if type was not boolean
+                        } else if ("false".equals(originalPropValue) || "true".equals(originalPropValue)) { //proceed even if type was not boolean
                             newProperty.setValue((Value) null);
                             parent.setProperty(name, !Boolean.parseBoolean(originalPropValue));
                         }
