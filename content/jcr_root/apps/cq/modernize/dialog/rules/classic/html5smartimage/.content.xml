@@ -17,7 +17,7 @@
                 allowUpload="{Boolean}false"
                 autoStart="{Boolean}false"
                 class="cq-droptarget"
-                mimeTypes="[image/gif,image/jpeg,image/png,image/webp,image/tiff]"
+                mimeTypes="[image/gif,image/jpeg,image/png,image/webp,image/tiff,image/svg+xml]"
                 multiple="{Boolean}false"
                 title="${./title}"
                 cropParameter="${./cropParameter}"
