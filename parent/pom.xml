@@ -12,7 +12,8 @@
  *  governing permissions and limitations under the License.
  */
 -->
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>com.adobe.cq</groupId>
@@ -36,7 +37,7 @@
         <aem.port>4502</aem.port>
         <aem.publish.host>localhost</aem.publish.host>
         <aem.publish.port>4503</aem.publish.port>
-        <aem.contextPath />
+        <aem.contextPath/>
         <sling.user>admin</sling.user>
         <sling.password>admin</sling.password>
         <vault.user>admin</vault.user>
@@ -280,6 +281,7 @@
                 <plugin>
                     <groupId>org.apache.felix</groupId>
                     <artifactId>maven-bundle-plugin</artifactId>
+                    <version>4.2.0</version>
                     <extensions>true</extensions>
                     <dependencies>
                         <dependency>
@@ -464,12 +466,14 @@
                 <repository>
                     <id>bintray-adobe-maven</id>
                     <name>Adobe Bintray Maven</name>
-                    <url>https://api.bintray.com/maven/${bintray.org}/${bintray.repo}/${bintray.package}/;publish=1</url>
+                    <url>https://api.bintray.com/maven/${bintray.org}/${bintray.repo}/${bintray.package}/;publish=1
+                    </url>
                 </repository>
                 <snapshotRepository>
                     <id>bintray-adobe-maven</id>
                     <name>Adobe Bintray Maven</name>
-                    <url>https://api.bintray.com/maven/${bintray.org}/${bintray.repo}/${bintray.package}/;publish=1</url>
+                    <url>https://api.bintray.com/maven/${bintray.org}/${bintray.repo}/${bintray.package}/;publish=1
+                    </url>
                 </snapshotRepository>
             </distributionManagement>
 

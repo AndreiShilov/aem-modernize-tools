@@ -479,8 +479,8 @@ public abstract class AbstractNodeBasedRewriteRule implements RewriteRule {
 
                     // negate boolean properties if negation character has been set
                     String negate = matcher.group(1);
-                    String originalPropValue = originalProperty.getValue().getString();
                     if ("!".equals(negate)) {
+                        String originalPropValue = originalProperty.getValue().getString();
                         if (originalProperty.getType() == PropertyType.BOOLEAN) {
                             newProperty.setValue(!newProperty.getBoolean());
                         } else if ("false".equals(originalPropValue) || "true".equals(originalPropValue)) { //proceed even if type was not boolean
